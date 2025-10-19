@@ -11,7 +11,7 @@ function closeLoginModal() {
   loginScreen.value = false;
 }
 function openLoginModal() {
-  loginScreen.value = true; 
+  loginScreen.value = true;
 }
 function createTicket() {
   ticketCreation.value = true;
@@ -22,13 +22,13 @@ function stopTicketCreation() {
 </script>
 
 <template>
-  <NavBar @open-login="openLoginModal"/>
-   <div class="pt-4 max-w-screen overflow-x-clip">
+  <NavBar @open-login="openLoginModal" />
+  <div class="pt-4 max-w-screen overflow-x-clip">
 
-    <LoginModal  :isModalOpen="loginScreen" @close="closeLoginModal" />
-    <CreateTicket :isModalOpen="ticketCreation" @close="stopTicketCreation" />>
+    <LoginModal :isModalOpen="loginScreen" @close="closeLoginModal" />
+    <CreateTicket :isModalOpen="ticketCreation" @close="stopTicketCreation" />
 
-    <TicketDash @create-ticket="createTicket"/>
+    <TicketDash @create-ticket="createTicket" />
   </div>
 </template>
 
@@ -39,9 +39,11 @@ function stopTicketCreation() {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
