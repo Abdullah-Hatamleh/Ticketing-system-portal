@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+:root {
+  font-family: "JetBrains Mono", monospace;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+
+.card {
+  padding: 2em;
+}
+
+.bg-gradient-1 {
+  background: linear-gradient(to bottom, #FFFFFF 0%, #CDCBCB 9%, #999999 100%);
+}
+.bg-gradient-2 {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(137, 217, 174, 0.59) 9%,
+    #65C792 100%
+  );
+}
+.bg-gradient-3 {
+  background: linear-gradient(to bottom, #FFFFFF 0%, #EDF8A7 9%, #D3E079 100%);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+
+}
