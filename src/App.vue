@@ -5,20 +5,22 @@ import { ref } from 'vue';
 import LoginModal from './components/LoginModal.vue';
 import TicketDash from './components/TicketDash.vue';
 import CreateTicket from './components/CreateTicket.vue';
-const loginScreen = ref(true);
+import auth from './stores/auth';
+const loginScreen = ref(!auth.isLoggedIn.value);
 const ticketCreation = ref(false);
+
 function closeLoginModal() {
   loginScreen.value = false;
 }
 function openLoginModal() {
   loginScreen.value = true;
 }
-function createTicket() {
-  ticketCreation.value = true;
-}
-function stopTicketCreation() {
-  ticketCreation.value = false;
-}
+// function createTicket() {
+//   ticketCreation.value = true;
+// }
+// function stopTicketCreation() {
+//   ticketCreation.value = false;
+// }
 </script>
 
 <template>
@@ -26,9 +28,8 @@ function stopTicketCreation() {
   <div class="pt-4 max-w-screen overflow-x-clip">
 
     <LoginModal :isModalOpen="loginScreen" @close="closeLoginModal" />
-    <CreateTicket :isModalOpen="ticketCreation" @close="stopTicketCreation" />
 
-    <TicketDash @create-ticket="createTicket" />
+    <TicketDash v-if="auth.isLoggedIn.value" @create-ticket="createTicket" />
   </div>
 </template>
 

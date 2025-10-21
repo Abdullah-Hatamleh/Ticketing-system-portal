@@ -12,7 +12,7 @@ defineEmits(['close']);
 <template>
   <div v-if="show" class="fixed inset-0 z-50 flex items-center justify-center bg-[#00000098] ">
     <!-- Modal content -->
-    <div class="bg-white rounded-lg shadow-lg w-fit mx-4 relative overflow-clip">
+    <div class="bg-white rounded-lg shadow-lg w-fit mx-4 relative overflow-scroll max-h-[80vh]">
       <!-- Close button -->
       <button @click="$emit('close')" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
         &times;
