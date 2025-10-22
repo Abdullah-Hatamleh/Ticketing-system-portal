@@ -4,6 +4,10 @@ import App from "./App.vue";
 import axios from "axios";
 import auth from "./stores/auth";
 
-axios.defaults.baseURL = "http://127.0.0.1:8000/api";
+// axios.get('http://localhost:8000/api/user')
+//   .then(res => console.log(res))
+//   .catch(err => console.error(err));
+
+axios.defaults.baseURL = "/api";
 auth.checkAuth();
 createApp(App).mount("#app");

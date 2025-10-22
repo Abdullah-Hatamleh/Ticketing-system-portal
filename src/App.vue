@@ -21,6 +21,9 @@ function openLoginModal() {
 // function stopTicketCreation() {
 //   ticketCreation.value = false;
 // }
+
+console.log(auth.isLoggedIn.value);
+
 </script>
 
 <template>

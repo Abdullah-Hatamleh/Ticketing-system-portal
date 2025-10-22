@@ -11,7 +11,7 @@ const props = defineProps({
   gradient: String
 })
 
-console.log("TICKETS :" ,props.tickets);
+console.log("TICKETS :", props.tickets);
 watch(
   () => {
     try {
@@ -42,7 +42,7 @@ const checkScrollNeedsMore = () => {
 };
 
 const loadmore = () => {
-    emit('loadMore', props.state)
+  emit('loadMore', props.state)
 }
 
 onMounted(() => {
@@ -65,7 +65,7 @@ onMounted(() => {
     <div ref="columnRef" class="mt-12 px-8 flex-1 overflow-y-auto flex flex-col gap-8">
       <!-- Ticket Cards -->
       <div v-for="ticket in tickets" :key="ticket.id"
-        class="bg-white/60 backdrop-blur-md rounded px-2 py-8 shadow text-sm w-full relative cursor-pointer"
+        class="bg-white/60 backdrop-blur-md rounded px-2 py-8 shadow text-sm w-full relative cursor-pointer transition-transform duration-200 ease-in-out hover:scale-[1.02] hover:shadow-lg"
         @click="emit('selectTicket', ticket)">
         <div :class="[
           'absolute top-0 left-0 p-2 text-xs font-bold rounded-br-3xl',
@@ -82,7 +82,8 @@ onMounted(() => {
       </div>
 
       <!-- Loading indicator now load more button -->
-      <button @click="loadmore" class="text-center text-white bg-blue-500 p-2 w-fit self-center mb-4 cursor-pointer rounded">
+      <button @click="loadmore"
+        class="text-center text-white bg-blue-500 p-2 w-fit self-center mb-4 cursor-pointer rounded">
         Load more
       </button>
     </div>

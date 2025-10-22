@@ -16,7 +16,6 @@ async function checkAuth() {
     });
     const response = await axios.get("/user");
     userName.value = response.data.name;
-     
   }
 }
 
@@ -30,5 +29,5 @@ export default {
   isLoggedIn,
   checkAuth,
   logout,
-  userName
+  userName,
 };

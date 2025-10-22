@@ -5,6 +5,7 @@ import ViewTicket from './ViewTicket.vue'
 import auth from '../stores/auth'
 import axios from 'axios'
 import CreateTicket from './CreateTicket.vue'
+import Replythread from './replythread.vue'
 
 // Ticket state values (matching your UI labels)
 const states = {
@@ -15,6 +16,7 @@ const states = {
 
 const emit = defineEmits(['createTicket']);
 const ticketCreation = ref(false);  
+const threadModalOpen = ref(false)
 // Reactive data stores per group
 const tickets = ref({
   closed: [],
@@ -54,6 +56,8 @@ const isLoading = ref({
   open: false,
   awaiting: false
 })
+
+
 const getRandomPriority = () => {
   const priorities = ['low', 'medium', 'high', 'critical'];
   return priorities[Math.floor(Math.random() * priorities.length)];
@@ -107,6 +111,20 @@ page.value['open'] = 1;
 
 fetchTicketsByState('open');
 }
+
+const threadReplies = ref([]);
+const threadId = ref();
+const threadState = ref();
+function openReplies(payload) {
+  threadReplies.value = payload.replies;
+  threadId.value = payload.id
+  threadState.value = payload.state;
+
+  threadModalOpen.value = true;
+}
+function closeThreadModal() {
+  threadModalOpen.value = false;
+}
 </script>
 
 <template class="max-w-screen">
@@ -126,13 +144,14 @@ fetchTicketsByState('open');
     <TicketColumn state="awaiting" title="Awaiting" gradient="bg-gradient-3" :tickets="tickets.awaiting"
       :loading="isLoading.awaiting" @loadMore="fetchTicketsByState" @selectTicket="openView" />
   </div>
-  <ViewTicket v-if="viewModalOpen" v-bind="selectedTicket" @close="closeView" />
+  <ViewTicket v-if="viewModalOpen" v-bind="selectedTicket" @close="closeView" :isForm="false" @replies="openReplies" />
+  <Replythread :isModalOpen="threadModalOpen" :replies="threadReplies" :ticket_id="threadId" :state="threadState" @close="closeThreadModal"/>
   <CreateTicket :isModalOpen="ticketCreation" @close="stopTicketCreation" @newTicket="refreshOpentickets" />
 
 </template>
 
 <style scoped>
-/* Optional custom scroll styling */
+
 ::-webkit-scrollbar {
   width: 6px;
 }
