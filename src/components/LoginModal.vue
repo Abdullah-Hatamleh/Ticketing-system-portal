@@ -18,6 +18,7 @@ const emit = defineEmits(['close'])
 
 const login = async () => {
     try {
+        error.value = '';
         const response = await axios.post('/login', {
             email: email.value,
             password: password.value
@@ -33,7 +34,7 @@ const login = async () => {
 
     }
     catch (e) {
-        if(e.status === 401){
+        if(e.status === 401 || e.status  === 422){
             error.value = e.response.data.message;
         }
     }
@@ -46,7 +47,7 @@ const login = async () => {
             <form class="pt-6 flex flex-col gap-y-6 justify-center items-center" action="post" @submit.prevent="login">
                 <div class="bg-[#D3E079] py-4 w-full "><label for="Email">Email :</label> <input type="text" id="Email"
                         v-model="email" placeholder="Enter Email Here"></div>
-                    <div class=" text-red-600" v-if="error"> {{ error }}</div>
+                    <div class=" text-red-600 px-4" v-if="error"> {{ error }}</div>
                 <div class="bg-[#D3E079] py-4 w-full "><label for="pass">Password :</label> <input type="password"
                         id="pass" v-model="password" placeholder="Enter Password Here"></div>
 
