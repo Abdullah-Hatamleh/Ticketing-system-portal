@@ -34,7 +34,9 @@ const login = async () => {
 
     }
     catch (e) {
-        if(e.status === 401 || e.status  === 422){
+        console.log(e.status >= 400 && e.status < 500);
+        
+        if(e.status >= 400 && e.status < 500){
             error.value = e.response.data.message;
         }
     }
