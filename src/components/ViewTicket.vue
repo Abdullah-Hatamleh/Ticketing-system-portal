@@ -48,11 +48,14 @@ if ((props.replies && props.replies.length > 0) || props.state === "closed") {
                     }}
                 </div>
                 <div v-if="attachment"><strong>Attachment:</strong>
-                    <img :src="attachment" alt="" class=" max-w-7xl">
+                    <a :href="attachment" target="_blank">
+                        <img :src="attachment" alt="" class=" max-w-7xl">
+                    </a>
                 </div>
                 <div v-if="canViewThread" class="w-full flex justify-center">
                     <button @click="openThread"
-                        class=" font-extrabold rounded-lg hover:bg-[#65C792] w-fit p-2 cursor-pointer border hover:border-0 box-border">Reopn /
+                        class=" font-extrabold rounded-lg hover:bg-[#65C792] w-fit p-2 cursor-pointer border hover:border-0 box-border">Reopn
+                        /
                         thread</button>
                 </div>
             </div>

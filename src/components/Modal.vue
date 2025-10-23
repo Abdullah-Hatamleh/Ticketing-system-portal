@@ -7,6 +7,10 @@ const props = defineProps({
   isForm: {
     type: Boolean,
     default: true,
+  },
+  isClosable: {
+    type: Boolean,
+    default: true
   }
 })
 defineEmits(['close']);
@@ -26,8 +30,9 @@ watch(() => props.show, (newVal) => {
     <!-- Modal content -->
     <div class="bg-white rounded-lg shadow-lg w-fit mx-4 relative overflow-auto max-h-[80vh]">
       <!-- Close button -->
-      <button @click="$emit('close')" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
-        &times;
+      <button v-if="isClosable" @click="$emit('close')"
+        class=" cursor-pointer absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+        <v-icon name="ri-close-circle-fill" scale="2" fill="black" />
       </button>
 
       <!-- Title -->

@@ -8,11 +8,11 @@ const props = defineProps({
     state: { type: String, default: 'open' },
     isModalOpen: { type: Boolean, default: false }
 })
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'refreshTickets']);
 const canReply = ref(false);
 
 watch(() => props.state, (newState) => {
-  canReply.value = newState === 'closed';
+    canReply.value = newState === 'closed';
 }, { immediate: true });
 const newReply = ref('');
 
@@ -22,9 +22,10 @@ function reopen() {
             axios.post(`/tickets/reopen/${props.ticket_id}`, {
                 'comment': newReply.value
             })
-
+            emit('refreshTickets');
+            emit('close');
         } catch (error) {
-            alert("didn't work idiot");
+            alert("Could not re-open ticket");
             console.log(error);
         }
     }
@@ -52,7 +53,7 @@ function reopen() {
                     reply.user_id ? 'self-end bg-blue-500 text-white' : 'self-start bg-gray-200 text-gray-800'
                 ]">
                     <p>{{ reply.comment }}</p>
-                    
+
                 </div>
                 <div v-if="replies.length === 0" class=" text-gray-400">There is nothing...</div>
             </div>

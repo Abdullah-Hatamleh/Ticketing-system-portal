@@ -15,7 +15,7 @@ const states = {
 }
 
 const emit = defineEmits(['createTicket']);
-const ticketCreation = ref(false);  
+const ticketCreation = ref(false);
 const threadModalOpen = ref(false)
 // Reactive data stores per group
 const tickets = ref({
@@ -91,7 +91,7 @@ const fetchTicketsByState = async (state) => {
   const response = await axios.get(uri)
   const newtickets = response.data.data;
   console.log(newtickets);
-  
+
   tickets.value[state].push(...newtickets);
   page.value[state]++;
 
@@ -106,10 +106,10 @@ onMounted(() => {
 })
 
 function refreshOpentickets() {
-tickets.value['open'] = [];
-page.value['open'] = 1;
+  tickets.value['open'] = [];
+  page.value['open'] = 1;
 
-fetchTicketsByState('open');
+  fetchTicketsByState('open');
 }
 
 const threadReplies = ref([]);
@@ -125,18 +125,52 @@ function openReplies(payload) {
 function closeThreadModal() {
   threadModalOpen.value = false;
 }
+
+function refreshClosedTickets() {
+  tickets.value['closed'] = [];
+  page.value['closed'] = 1;
+
+  fetchTicketsByState('closed');
+}
+
+function refreshAwaitingTickets() {
+  tickets.value['awaiting'] = [];
+  page.value['awaiting'] = 1;
+
+  fetchTicketsByState('awaiting');
+}
+
+function refreshAllTickets() {
+  refreshAwaitingTickets();
+  refreshClosedTickets();
+  refreshOpentickets();
+}
+async function refreshAfterReopen() {
+
+  await new Promise(resolve => setTimeout(resolve, 100));
+  refreshClosedTickets();
+  refreshOpentickets();
+
+}
 </script>
 
 <template class="max-w-screen">
   <!-- Top bar -->
   <div class="flex justify-between px-4 pt-4">
     <div></div>
-    <h2 class="font-bold text-lg">Welcome {{ auth.userName.value}}!</h2>
-    <button class="font-bold rounded-lg bg-[#65C792] w-fit p-2 cursor-pointer" @click="createTicket">New Ticket</button>
+    <h2 class="font-bold text-lg">Welcome {{ auth.userName.value }}!</h2>
+    <div class=" flex justify-center items-center gap-x-6">
+      <button title="Refresh" class=" p-1 bg-blue-300 rounded-full cursor-pointer" @click="refreshAllTickets"> <v-icon
+          name="hi-refresh" scale="2" animation="spin" hover /> </button>
+      <button class="font-bold rounded-lg bg-[#65C792] w-fit p-2 cursor-pointer" @click="createTicket">
+        <v-icon name="hi-document-add" scale="1.5" /> New
+        Ticket</button>
+    </div>
   </div>
 
   <!-- Columns -->
-  <div class="lg:h-[80vh] lg:px-6 px-1.5 pt-12 flex-col lg:flex-row flex justify-between max-w-screen overflow-clip gap-16">
+  <div
+    class="lg:h-[80vh] lg:px-6 px-1.5 pt-12 flex-col lg:flex-row flex justify-between max-w-screen overflow-clip gap-16">
     <TicketColumn state="closed" title="Closed" gradient="bg-gradient-1" :tickets="tickets.closed"
       :loading="isLoading.closed" @loadMore="fetchTicketsByState" @selectTicket="openView" />
     <TicketColumn state="open" title="Open" gradient="bg-gradient-2" :tickets="tickets.open" :loading="isLoading.open"
@@ -145,13 +179,13 @@ function closeThreadModal() {
       :loading="isLoading.awaiting" @loadMore="fetchTicketsByState" @selectTicket="openView" />
   </div>
   <ViewTicket v-if="viewModalOpen" v-bind="selectedTicket" @close="closeView" :isForm="false" @replies="openReplies" />
-  <Replythread :isModalOpen="threadModalOpen" :replies="threadReplies" :ticket_id="threadId" :state="threadState" @close="closeThreadModal"/>
+  <Replythread :isModalOpen="threadModalOpen" :replies="threadReplies" :ticket_id="threadId" :state="threadState"
+    @close="closeThreadModal" @refreshTickets="refreshAfterReopen" />
   <CreateTicket :isModalOpen="ticketCreation" @close="stopTicketCreation" @newTicket="refreshOpentickets" />
 
 </template>
 
 <style scoped>
-
 ::-webkit-scrollbar {
   width: 6px;
 }

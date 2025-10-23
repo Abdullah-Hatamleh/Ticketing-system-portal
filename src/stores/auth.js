@@ -25,6 +25,23 @@ function logout() {
   console.log(isLoggedIn.value);
 }
 
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const config = error.config;
+
+    if (config?.skipAuthError) {
+      return Promise.reject(error);
+    }
+
+    if (error.response && error.response.status === 401) {
+      alert("Please sign back in");
+      logout();
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default {
   isLoggedIn,
   checkAuth,

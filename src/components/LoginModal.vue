@@ -21,8 +21,11 @@ const login = async () => {
         error.value = '';
         const response = await axios.post('/login', {
             email: email.value,
-            password: password.value
-        });
+            password: password.value,
+        }, {
+            skipAuthError: true
+        }
+        );
 
         const token = response.data.token;
 
@@ -35,21 +38,21 @@ const login = async () => {
     }
     catch (e) {
         console.log(e.status >= 400 && e.status < 500);
-        
-        if(e.status >= 400 && e.status < 500){
+
+        if (e.status >= 400 && e.status < 500) {
             error.value = e.response.data.message;
         }
     }
 }
 </script>
 <template>
-    <Modal :show="isModalOpen" @close="$emit('close')">
+    <Modal :show="isModalOpen" @close="$emit('close')" :is-closable="false">
         <template #title> Sign In To View And Create Tickets</template>
         <template #default>
             <form class="pt-6 flex flex-col gap-y-6 justify-center items-center" action="post" @submit.prevent="login">
                 <div class="bg-[#D3E079] py-4 w-full "><label for="Email">Email :</label> <input type="text" id="Email"
                         v-model="email" placeholder="Enter Email Here"></div>
-                    <div class=" text-red-600 px-4" v-if="error"> {{ error }}</div>
+                <div class=" text-red-600 px-4" v-if="error"> {{ error }}</div>
                 <div class="bg-[#D3E079] py-4 w-full "><label for="pass">Password :</label> <input type="password"
                         id="pass" v-model="password" placeholder="Enter Password Here"></div>
 
